@@ -1,0 +1,42 @@
+#!/bin/bash
+blue='\e[0;34'
+cyan='\e[0;36m'
+green='\e[0;34m'
+okegreen='\033[92m'
+lightgreen='\e[1;32m'
+white='\e[1;37m'
+red='\e[1;31m'
+yellow='\e[1;33m'
+
+COUNTER=1
+check(){
+  curlvar=$(curl -s -o /dev/null -w "%{http_code}" ${target}/${list} -L)
+  if [[ $curlvar =~ "200" ]];
+  then
+    printf "${cyan}[${COUNTER}] => ${target}/${list} => ${okegreen}Found\n";
+    echo "$target/$list" >> resultdir.txt
+  else
+    printf "${cyan}[${COUNTER}] => ${target}/${list} => ${red}Not Found\n";
+  fi
+}
+
+banner(){
+  echo -e $yellow"====================================="
+  echo -e $yellow"         Directory Scanner           "
+  echo -e $yellow"       Copyright Mrcakil@2020        "
+  echo -e $yellow"====================================="
+  read -p "Site : " target;
+  read -p "Threads : " THREADS;
+}
+banner
+for list in `cat dir.txt`;
+do
+ FAST=$(expr $COUNTER % $THREADS)
+ if [[ $FAST == 0 && $COUNTER > 0 ]];
+ then
+   sleep 1
+ fi
+ check &
+ COUNTER=$((COUNTER+1))
+done
+wait
