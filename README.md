@@ -1,6 +1,6 @@
 # dirscan (Directory Scanner)
 ![alt text](https://raw.githubusercontent.com/mrcakil/dirscan/main/dir.png)
-#### Requirements :  Curl
+### Requirements :  Curl
 ### Example Run : 
 ```
 root@Mrcakil:~#bash dirscan
